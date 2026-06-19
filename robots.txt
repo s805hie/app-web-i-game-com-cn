@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://s805hie.github.io/app-web-i-game-com-cn/sitemap.xml
