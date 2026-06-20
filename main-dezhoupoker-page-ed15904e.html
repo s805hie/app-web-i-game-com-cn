@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>德州扑克 · 专注策略与趣味</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f8f7f4;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      color: #1e1e1e;
+      line-height: 1.7;
+      padding: 2rem 1.5rem 3rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* hero */
+    .hero {
+      margin-bottom: 3.5rem;
+      padding: 3rem 0 1.5rem;
+      border-bottom: 1px solid #e2dfda;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: #1f1f1f;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: #3b3b3b;
+      max-width: 620px;
+    }
+
+    /* 通用标题 */
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 500;
+      margin: 2.5rem 0 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 450;
+      margin: 1.8rem 0 0.6rem;
+    }
+
+    section {
+      margin-bottom: 2.8rem;
+    }
+
+    .subdued {
+      color: #56534e;
+      font-size: 0.95rem;
+    }
+
+    /* 优势卡片区 */
+    .adv-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin: 1.2rem 0 0.8rem;
+    }
+
+    .adv-item {
+      background: #ffffffec;
+      border-radius: 14px;
+      padding: 1.1rem 1.4rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      border: 1px solid #eae7e1;
+    }
+
+    .adv-item strong {
+      display: inline-block;
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: #1f1f1f;
+      margin-bottom: 0.2rem;
+    }
+
+    .adv-item p {
+      margin-top: 0.15rem;
+      color: #3f3d3a;
+      font-size: 0.98rem;
+    }
+
+    /* 说明 / 场景 */
+    .scene-block {
+      background: #ffffffd9;
+      padding: 1.5rem 1.4rem;
+      border-radius: 16px;
+      margin: 1.2rem 0;
+      border: 1px solid #e8e4dd;
+    }
+
+    .faq-mini {
+      margin: 1.6rem 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #e5e0d9;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-q {
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+      font-size: 1.02rem;
+    }
+
+    .faq-a {
+      color: #3e3b36;
+      font-size: 0.96rem;
+    }
+
+    /* 底部链接 */
+    .footer-links {
+      margin-top: 3.2rem;
+      padding-top: 1.8rem;
+      border-top: 1px solid #ddd9d2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem 2rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-links a {
+      color: #1e1e1e;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.1s ease;
+    }
+
+    .footer-links a:hover {
+      border-bottom-color: #1e1e1e;
+    }
+
+    .inline-link {
+      color: #1e1e1e;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: #9e9a94;
+    }
+
+    .inline-link:hover {
+      text-decoration-color: #1e1e1e;
+    }
+
+    .footnote {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #6a6660;
+    }
+
+    /* 响应式 */
+    @media (max-width: 550px) {
+      body {
+        padding: 1.6rem 1rem 2.5rem;
+      }
+      .hero h1 {
+        font-size: 1.9rem;
+      }
+      .adv-item {
+        padding: 0.9rem 1rem;
+      }
+      .scene-block {
+        padding: 1.2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- hero -->
+  <header class="hero">
+    <h1>德州扑克 · 读懂牌桌</h1>
+    <p>一个帮你快速理解 <a href="https://main-dezhoupoker.com" class="inline-link">德州扑克</a> 规则、策略与氛围的轻量站点。无论你刚接触翻牌圈，还是想梳理下注逻辑，这里都准备了清晰的内容。</p>
+  </header>
+
+  <!-- 优势区 -->
+  <section>
+    <h2>为什么值得花几分钟了解这里</h2>
+    <div class="adv-grid">
+      <div class="adv-item">
+        <strong>规则拆解，不绕弯</strong>
+        <p>从底牌、公共牌到加注轮次，用平实的例子说明每阶段逻辑，避免教科书式的枯燥。</p>
+      </div>
+      <div class="adv-item">
+        <strong>策略视角，重选择</strong>
+        <p>位置、底池赔率、对手范围——不是堆砌术语，而是解释“为什么这么想”以及“如何做决定”。</p>
+      </div>
+      <div class="adv-item">
+        <strong>氛围平和，不鼓噪</strong>
+        <p>没有夸张的“一夜翻身”叙事，只提供经得起推敲的牌理与场景复盘。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 说明区 + 场景自然融合 -->
+  <section>
+    <h2>你可以在这里找到什么</h2>
+    <div class="scene-block">
+      <p>页面围绕“快速识别用途”来组织：</p>
+      <ul style="margin: 0.8rem 0 0.5rem 1.3rem; color: #3f3d3a; list-style: disc;">
+        <li>新手想弄清<strong>底牌强弱</strong>和翻前位置的影响；</li>
+        <li>有经验的玩家想回顾<strong>持续下注</strong>与慢打的适用场景；</li>
+        <li>或者只是好奇线上与线下牌局在<strong>读人 vs 读概率</strong>上的不同侧重。</li>
+      </ul>
+      <p style="margin-top: 0.8rem;">每个模块都尽量用一段话或一组对比讲透一个话题，避免信息过载。如果你发现某个概念连着读三遍还不清楚，那一定是我们的表达需要再打磨。</p>
+    </div>
+
+    <h3 style="margin-top: 2rem;">从一局牌开始感受</h3>
+    <p>假设你在大盲位，手牌是红心A和梅花Q。前面有人加注，按钮位跟注。这时候的思考顺序是什么？自己位置的劣势、对手可能的范围、底池里已经有多少筹码……这些在站点里都会以平视的角度展开，而不是直接告诉你“应该加注”。</p>
+    <p style="margin-top: 0.6rem;">因为 <a href="https://main-dezhoupoker.com" class="inline-link">德州扑克</a> 的魅力常常不在于标准答案，而在于理解自己为什么做某个选择。</p>
+  </section>
+
+  <!-- FAQ 摘要 -->
+  <section>
+    <h2>一些常见疑问 · 简短回应</h2>
+    <div class="faq-mini">
+      <div class="faq-item">
+        <div class="faq-q">这个网站适合完全没玩过的人吗？</div>
+        <div class="faq-a">可以。页面从牌型大小和翻前翻后基本流程说起，没有预设经验门槛。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">内容偏向现金局还是锦标赛？</div>
+        <div class="faq-a">两者都有涉及，但底池管理和位置逻辑在两种模式下通用。具体差异会用小专栏区分。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">是否有历史文章或术语表？</div>
+        <div class="faq-a">首页提供核心战术和常见术语对照，更多内容在页面内链中逐步补充，保持简洁。</div>
+      </div>
+    </div>
+    <p class="subdued" style="margin-top: 0.3rem;">—— 更细致的问题可以直接在站内搜索，或者通过底部邮箱提出建议。</p>
+  </section>
+
+  <!-- 底部链接 -->
+  <footer class="footer-links">
+    <a href="https://main-dezhoupoker.com">德州扑克</a>
+    <span style="color:#6a6660;">关于</span>
+    <span style="color:#6a6660;">策略索引</span>
+    <span style="color:#6a6660;">术语</span>
+    <a href="mailto:hello@example.com" style="border-bottom: none; color:#6a6660;">反馈</a>
+  </footer>
+
+  <div class="footnote">
+    保持平和，持续思考。<br>
+    页面内容仅供学习交流，不构成任何投资或博彩建议。
+  </div>
+
+</div>
+</body>
+</html>
