@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>德州扑克 · 策略与博弈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f2f4f6;
+            color: #1e2a3a;
+            line-height: 1.6;
+            padding: 0 1.2rem;
+        }
+
+        .wrapper {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        /* 导航 */
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.4rem 0 0.8rem;
+            border-bottom: 1px solid #dce0e5;
+        }
+
+        .nav-brand {
+            font-weight: 600;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            color: #203142;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #3a4b5e;
+            padding: 0.2rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: #8a9bb0;
+        }
+
+        /* hero */
+        .hero {
+            padding: 3.5rem 0 2.8rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: #1f2b39;
+            letter-spacing: -0.3px;
+        }
+
+        .hero .sub {
+            max-width: 620px;
+            margin: 1rem auto 0;
+            color: #495d71;
+            font-size: 1.05rem;
+        }
+
+        /* 卡片区块通用 */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 1.2rem;
+            color: #20313f;
+            border-left: 3px solid #9babb9;
+            padding-left: 0.8rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.6rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e5e9ee;
+            padding: 1.6rem 1.4rem 1.8rem;
+            transition: box-shadow 0.25s;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.6rem;
+            color: #1e2f40;
+        }
+
+        .card p {
+            font-size: 0.94rem;
+            color: #3b4e62;
+            margin-bottom: 0.6rem;
+        }
+
+        .card .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            background: #e9edf2;
+            padding: 0.15rem 0.65rem;
+            border-radius: 20px;
+            color: #3e556a;
+            margin-top: 0.2rem;
+        }
+
+        /* 场景模块 + 常见说明 */
+        .two-col {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin: 1.8rem 0 2.8rem;
+        }
+
+        .scene-card {
+            background: #ffffff;
+            border: 1px solid #e2e7ed;
+            border-radius: 12px;
+            padding: 1.6rem 1.5rem 1.8rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        }
+
+        .scene-card ul {
+            list-style: none;
+            margin-top: 0.4rem;
+        }
+
+        .scene-card li {
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            position: relative;
+            font-size: 0.93rem;
+            color: #2a3d50;
+        }
+
+        .scene-card li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #6f859c;
+            font-weight: bold;
+        }
+
+        .faq-mini {
+            background: #ffffff;
+            border: 1px solid #e2e7ed;
+            border-radius: 12px;
+            padding: 1.4rem 1.4rem 1.8rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+        }
+
+        .faq-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-q {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1a2b3a;
+            margin-bottom: 0.2rem;
+        }
+
+        .faq-a {
+            font-size: 0.88rem;
+            color: #3c5268;
+        }
+
+        /* 提示条 */
+        .note-box {
+            background: #e9eef3;
+            border-radius: 10px;
+            padding: 1.2rem 1.6rem;
+            margin: 1.2rem 0 2.2rem;
+            border-left: 4px solid #9aadc2;
+            font-size: 0.95rem;
+            color: #1e3142;
+        }
+
+        .note-box a {
+            color: #1f4a6e;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .note-box a:hover {
+            color: #0d2a40;
+        }
+
+        footer {
+            border-top: 1px solid #d7dde3;
+            padding: 1.8rem 0 2.2rem;
+            font-size: 0.82rem;
+            color: #5f7489;
+            text-align: center;
+        }
+
+        @media (max-width: 720px) {
+            .two-col {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 1.7rem;
+            }
+
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.6rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- 导航 -->
+    <nav>
+        <span class="nav-brand">♢ 牌桌边</span>
+        <div class="nav-links">
+            <a href="#">手牌</a>
+            <a href="#">位置</a>
+            <a href="#">底池</a>
+            <a href="#">弃牌率</a>
+        </div>
+    </nav>
+
+    <!-- hero -->
+    <div class="hero">
+        <h1>翻牌前与翻牌后</h1>
+        <div class="sub">
+            在无限注德州扑克里，读牌与读人同样微妙。位置、范围、下注尺度——每一条信息都像拼图。
+        </div>
+    </div>
+
+    <!-- 三个场景模块 + 常见说明 两列布局 -->
+    <div class="section-title">常见牌桌场景</div>
+    <div class="two-col">
+        <div class="scene-card">
+            <h3>翻前 3-bet 与隔离</h3>
+            <ul>
+                <li>后位用 AJo 或 KQo 隔离溜入玩家，避免多人底池失去主动权</li>
+                <li>面对紧手 open，用线性范围 3-bet：TT+、AQ+，弃掉 KJo 一类边缘牌</li>
+                <li>盲注位防守时，用同花连张或小对子跟注，看翻牌再决策</li>
+            </ul>
+            <p style="margin-top: 0.8rem;">位置越靠后，范围可以适当放宽，但翻后持续下注要匹配牌面结构。</p>
+        </div>
+
+        <div class="faq-mini">
+            <div class="faq-item">
+                <div class="faq-q">为什么翻前加注要控制尺度？</div>
+                <div class="faq-a">避免底池膨胀后失去操控空间，同时给对手不合适的跟注赔率。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">同花连张适合在什么位置玩？</div>
+                <div class="faq-a">中后位且筹码较深时，投入少量筹码看翻牌，击中强听牌或两对以上再发力。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">持续下注（c-bet）频率多少合适？</div>
+                <div class="faq-a">取决于翻牌结构和你所代表的范围，通常干燥牌面更频繁下注，湿润牌面适当过牌。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二行：两个场景卡片（补充三个场景中的另外两个） -->
+    <div class="card-grid">
+        <div class="card">
+            <h3>翻牌圈 · 顶对顶踢脚</h3>
+            <p>拿到顶对且踢脚为A或K时，价值下注要果断，但也要注意公对及同花听牌面。如果转牌发出明显听牌成牌，可考虑控池。</p>
+            <span class="tag">价值下注</span>
+        </div>
+        <div class="card">
+            <h3>河牌圈 · 诈唬与抓诈</h3>
+            <p>对手范围里缺乏坚果组合时，可以选择用阻断牌做诈唬。而抓诈的一方要思考对手是否在翻牌、转牌都有合理的下注理由。</p>
+            <span class="tag">阻断牌</span>
+        </div>
+    </div>
+
+    <!-- 提示条 + 自然嵌入链接 -->
+    <div class="note-box">
+        如果想进一步了解规则、位置策略或不同盲注结构下的思考方式，可以阅读关于
+        <a href="https://official-dezhoupoker.com">德州扑克</a> 的基础讨论，
+        其中对范围构建和底池管理有比较清晰的梳理。实际对局中，不断调整对对手范围的推测，比死记硬背更重要。
+    </div>
+
+    <!-- 核心介绍：克制叙述 -->
+    <div style="margin: 1.6rem 0 2rem;">
+        <div class="section-title">从翻前到摊牌</div>
+        <div style="background: #ffffff; border: 1px solid #e2e7ed; border-radius: 12px; padding: 1.6rem 1.6rem 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.02);">
+            <p style="margin-bottom: 0.8rem; font-size: 0.96rem;">
+                德州扑克之所以吸引人，在于信息不对称下的决策。你只知道自己的两张底牌，但公共牌一步步摊开，对手的下注、加注、过牌都在透露信息。翻前选择哪些牌入池，翻后如何应对不同的翻牌面，这些构成了游戏的核心。
+            </p>
+            <p style="font-size: 0.96rem;">
+                优秀的玩家会同时关注自己的范围和对手的范围。比如，翻前在枪口位用 AQo 开池，翻牌发出 Q-7-2 彩虹面，这是一个对自己非常有利的翻牌——你的范围里有更多顶对，而对手跟注范围里的小对子或同花连张很难击中。这种局面下持续下注往往收益稳定。
+            </p>
+        </div>
+    </div>
+
+    <!-- 轻量 footer -->
+    <footer>
+        <p>策略无止境 · 读牌读人两不误</p>
+    </footer>
+</div>
+</body>
+</html>
